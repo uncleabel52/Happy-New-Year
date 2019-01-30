@@ -15,7 +15,6 @@ void setup() {
   for (int i = 0; i < 6; i++) {
     img[i] = loadImage("NY0" + i + ".png");
     PigTures[i] = new pigsouls(img[i], 512, 512);
-    PigTures[i].getPixels();
   }
   
      background(255);
