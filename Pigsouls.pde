@@ -3,22 +3,34 @@
 //pigsoul system
 
 
+
 class pigsouls {
   PImage img;
   int maxPigX, maxPigY;
-  float[] off = new float[100];
+  float[] r = new float[1024*1024];
+  float[] g = new float[1024*1024];
+  float[] b = new float[1024*1024];
+  
   
   pigsouls(PImage imgfile, int maxX, int maxY) {
     //imgfile: name of the image, maxX: width of picture, maxY: height of picture
     img = imgfile;
+    img.resize(maxX, maxY);
     maxPigX = maxX;
-    maxPigY = maxY;   
+    maxPigY = maxY;  
+    
+    for (int i = 0; i < maxPigX; i++) {
+               for (int j = 0; j < maxPigY; j++) {
+                 r[j*maxPigX+i] = red(img.pixels[j*maxPigX+i]);
+                 g[j*maxPigX+i] = green(img.pixels[j*maxPigX+i]);
+                 b[j*maxPigX+i] = blue(img.pixels[j*maxPigX+i]);
+               }
+    }
     
     //off for noiseDrawing()
-    for (int i = 0; i < 100; i++) {
-      off[i] = 100*i;
-    }
+    
   }
+  
   
    void mouseDrawing(float Size, String omg, boolean spddy) {
      //Size: size of the pixel, omg(REAL or BLUR): style of drawing, spddy(true or false): whether size related to the speed
@@ -67,9 +79,15 @@ class pigsouls {
        }
      }
    }
-   void noiseDrawing(int num, float Size, float spd, String omg, boolean spddy) {
+   void noiseDrawing(int num, float Size, float spd, String omg, String spddy) {
      //num: number of "snakes", Size: size of pixels, spd: speed of snakes
      //omg(REAL or BLUR): style of drawing, spddy(true or false): whether size related to the speed
+     
+     //CAUTION: the following has to be set up in order for this function to work
+     //   float[] off = new float[100];
+     //for (int i = 0; i < 100; i++) {
+     //    off[i] = 100*i;
+     //  }
      
      for (int r = 0; r < num; r++) {
        
@@ -90,14 +108,14 @@ class pigsouls {
            if (omg == "REAL") {
              for (int i = 0; i < maxPigX; i++) {
                for (int j = 0; j < maxPigY; j++) {
-                 if (spddy == true) {
+                 if (spddy == "SPEED") {
                    if (dist(x, y, i, j) < mspd*Size/15) {
                    pushMatrix();
                    translate(i, j);
                    display(i, j, 1);
                    popMatrix();              
                    }
-                 } else if (spddy == false) {
+                 } else if (spddy == "NORMAL") {
                    if (dist(x, y, i, j) < Size) {
                    pushMatrix();
                    translate(i, j);
@@ -110,10 +128,12 @@ class pigsouls {
            } else if (omg == "BLUR") {
               pushMatrix();
               translate(x, y);
-              if (spddy == true) {
+              if (spddy == "SPEED") {
                 display(x, y, mspd*Size/15);
-               } else if (spddy == false) {
+               } else if (spddy == "NORMAL") {
                 display(x, y, Size);
+              } else if (spddy == "RED") {
+                display(x, y, map(red(img.pixels[y*maxPigX+x]), 0, 255, 0, Size));
               }
             popMatrix();
            }
@@ -128,23 +148,22 @@ class pigsouls {
      //x: x-coord of pixel, y: y-coord of pixel, Size: size of pixel
      
      //display pixel as circle
-     fill(img.get(x, y));
+     fill(r[y*maxPigX+x], g[y*maxPigX+x], b[y*maxPigX+x]);
      ellipse(0, 0, Size, Size);
    }
-     
-   void getTiles(pigsouls[] pigName, int x, int y) {
-     //pigName: name of variables to save, x: width separartion, y: height separation
-     
-     pigName = new pigsouls[x*y];
-     PImage[] TileImg = new PImage[x*y];
-     
-     //to divide img as tile
-     for (int i = 0; i < maxPigY/y; i++) {
-       for (int j = 0; j < maxPigX/x; j++) {
-         TileImg[i*x+j] = img.get(j*maxPigX/x, i*maxPigY/y, maxPigX/x, maxPigY/y);
-         pigName[i*x+j] = new pigsouls(TileImg[i*x+j], maxPigX/x, maxPigY/y);
-       }
-     }
+   
+   void moreRed() {
+     for (int i = 0; i < maxPigX; i++) {
+               for (int j = 0; j < maxPigY; j++) {
+                 if (r[j*maxPigX+i] > 150) {
+                   r[j*maxPigX+i] = min(r[j*maxPigX+i]+ 50, 255);
+                 }
+                  
+                 
+               }
+    }
+   
    }
      
+   
 }

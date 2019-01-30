@@ -7,15 +7,24 @@ PImage[] img = new PImage[6];
 pigsouls[] PigTures = new pigsouls[6];
 int r = 0;
 float timer = 4000;
+float[] off = new float[100];
     
 void setup() {
+  //fullScreen();
    size(512, 512);
-   
+   noiseSeed(int(random(1000)));
+
   //load the pictures
   for (int i = 0; i < 6; i++) {
     img[i] = loadImage("NY0" + i + ".png");
     PigTures[i] = new pigsouls(img[i], 512, 512);
+    PigTures[i].moreRed();
   }
+  
+
+  for (int i = 0; i < 100; i++) {
+      off[i] = 100*i;
+    }
   
      background(255);
      textAlign(CENTER);
@@ -31,18 +40,20 @@ void draw() {
   if (millis() > timer) {
     //Time for reading the instruction
   for (int i = 0; i < 5; i++) {
-     PigTures[r].noiseDrawing(30, 10, 0.0007, "BLUR", true);
-  }
-  }
- if (millis()-timer > 40000) {
-    IntList PigNum2 = new IntList();
-    for (int i = 0; i < 6; i++) {
-      if (i != r) {
-      PigNum2.append(i);
-      }  
+    for (int j = 0; j < 1000; j++) {
+       PigTures[r].noiseDrawing(1, 10, 0.0007, "BLUR", "SPEED");
+
     }
-      int rr = floor(random(5));
-      r = PigNum2.get(rr);
+     
+  }
+  for (int i = 0; i < 100; i++) {
+    if (off[i] >  10000) {
+       off[i] = 100*i;
+    }
+    }
+  }
+ if (millis()-timer > 10000) {
+    r = randomArray(r, 6);
       //println(r);
       timer = millis();
  }
@@ -52,14 +63,7 @@ void draw() {
 void keyReleased() {  
   //random system to pick a different random picture each click
   if (key == 'a') {
-    IntList PigNum2 = new IntList();
-    for (int i = 0; i < 6; i++) {
-      if (i != r) {
-      PigNum2.append(i);
-      }  
-    }
-      int rr = floor(random(5));
-      r = PigNum2.get(rr);
+    r = randomArray(r, 6);
       //println(r);
       timer = millis();
   }
