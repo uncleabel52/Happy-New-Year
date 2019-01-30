@@ -1,3 +1,6 @@
+//Jonathan Chan
+//30-1-2019
+//Image to tile images
 
 
 PImage[] get4Tiles(PImage img, int x, int y) {
