@@ -5,7 +5,6 @@
 
 class pigsouls {
   PImage img;
-  color[] c= new color[1024*1024];
   int maxPigX, maxPigY;
   float[] off = new float[100];
   
@@ -21,14 +20,6 @@ class pigsouls {
     }
   }
   
-  void getPixels() {
-    //save every single pixels
-    for (int y = 0; y < maxPigY; y++) {
-      for (int x = 0; x < maxPigX; x++) {
-        c[y*maxPigX + x] = img.get(x, y);
-      }
-    }
-   }
    void mouseDrawing(float Size, String omg, boolean spddy) {
      //Size: size of the pixel, omg(REAL or BLUR): style of drawing, spddy(true or false): whether size related to the speed
      
@@ -137,7 +128,7 @@ class pigsouls {
      //x: x-coord of pixel, y: y-coord of pixel, Size: size of pixel
      
      //display pixel as circle
-     fill(c[y*maxPigX+x]);
+     fill(img.get(x, y));
      ellipse(0, 0, Size, Size);
    }
      
