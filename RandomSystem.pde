@@ -1,4 +1,6 @@
-
+//Jonathan Chan
+//30-1-2019
+//Random from array system
 
 int randomArray(int r, int ra) {
 
