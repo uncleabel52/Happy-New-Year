@@ -18,7 +18,7 @@ void setup() {
   for (int i = 0; i < 6; i++) {
     img[i] = loadImage("NY0" + i + ".png");
     PigTures[i] = new pigsouls(img[i], 512, 512);
-    PigTures[i].moreRed();
+    //PigTures[i].moreRed();
   }
   
 
@@ -39,11 +39,15 @@ void setup() {
 void draw() {
   if (millis() > timer) {
     //Time for reading the instruction
-  for (int i = 0; i < 5; i++) {
-    for (int j = 0; j < 1000; j++) {
-       PigTures[r].noiseDrawing(1, 10, 0.0007, "BLUR", "SPEED");
+    
+  PigTures[r].reread();
+  PigTures[r].mouseRed();
+  //PigTures[r].mouseBright();
+  for (int i = 0; i < 50; i++) {
+       
+       PigTures[r].noiseDrawing(20, 10, 0.0007, "BLUR", "SPEED");
 
-    }
+    
      
   }
   for (int i = 0; i < 100; i++) {
@@ -52,7 +56,7 @@ void draw() {
     }
     }
   }
- if (millis()-timer > 10000) {
+ if (millis()-timer > 20000) {
     r = randomArray(r, 6);
       //println(r);
       timer = millis();

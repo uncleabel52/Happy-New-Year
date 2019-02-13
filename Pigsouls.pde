@@ -152,18 +152,62 @@ class pigsouls {
      ellipse(0, 0, Size, Size);
    }
    
+   void reread() {
+   //rescan the pixels for realtime color abjustment  
+     
+      for (int i = 0; i < maxPigX; i++) {
+               for (int j = 0; j < maxPigY; j++) {
+                 r[j*maxPigX+i] = red(img.pixels[j*maxPigX+i]);
+                 g[j*maxPigX+i] = green(img.pixels[j*maxPigX+i]);
+                 b[j*maxPigX+i] = blue(img.pixels[j*maxPigX+i]);
+               }
+    }
+   }
+     
+   
    void moreRed() {
+     //increase the 'redness' of the image
+     
      for (int i = 0; i < maxPigX; i++) {
                for (int j = 0; j < maxPigY; j++) {
                  if (r[j*maxPigX+i] > 150) {
                    r[j*maxPigX+i] = min(r[j*maxPigX+i]+ 50, 255);
                  }
-                  
-                 
                }
     }
    
    }
+   
+   void mouseRed() {
+     //the red of the pixels is related to the x position of the mouse
      
+      for (int i = 0; i < maxPigX; i++) {
+               for (int j = 0; j < maxPigY; j++) {
+                 if (r[j*maxPigX+i] > 100) {
+                   r[j*maxPigX+i] = r[j*maxPigX+i]*map(mouseX, 0, width, 0.5, 1.5);
+                   r[j*maxPigX+i] = constrain(r[j*maxPigX+i], 0, 255);
+                 }
+               }
+    }
+   }
+   
+   void mouseBright() {
+       //the brightness of the pixels is related to the x position of the mouse
+
+     
+     for (int i = 0; i < maxPigX; i++) {
+               for (int j = 0; j < maxPigY; j++) {
+                 r[j*maxPigX+i] = r[j*maxPigX+i]*mouseY/width*2;
+                 g[j*maxPigX+i] = g[j*maxPigX+i]*mouseY/width*2;
+                 b[j*maxPigX+i] = b[j*maxPigX+i]*mouseY/width*2;
+                 r[j*maxPigX+i] = constrain(r[j*maxPigX+i], 0, 255);
+                 g[j*maxPigX+i] = constrain(g[j*maxPigX+i], 0, 255);
+                 b[j*maxPigX+i] = constrain(b[j*maxPigX+i], 0, 255);
+                 
+                   
+                 
+               }
+    }
+   }
    
 }
